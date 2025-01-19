@@ -153,3 +153,25 @@
 .scrollable-container::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.waypoints-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.waypoints-table th,
+.waypoints-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.waypoints-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.waypoints-table button {
+  padding: 4px 8px;
+  margin: 2px;
+}

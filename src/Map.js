@@ -268,61 +268,74 @@ border: '1px solid black'
 
 {/* Mission Modal */}
 {showMissionModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleModalClose}>&times;</span>
-            <h2>Mission Waypoints</h2>
-            <div className="scrollable-container">
-              <div className="waypoints-list">
-                {waypoints.map((waypoint, index) => (
-                  <div key={index} className="waypoint-item">
-                    {waypoint.type === 'polygon' ? (
-                      <div>
-                        <div>Polygon Ref ({waypoint.index})</div>
-                        <button onClick={() => {
-                          // Show polygon coordinates when viewing
-                          if (waypoint.coordinates) {
-                            setTempPolygon({
-                              coordinates: waypoint.coordinates,
-                              position: index,
-                              type: 'view'
-                            });
-                            setShowPolygonModal(true);
-                          }
-                        }}>
-                          View Polygon
-                        </button>
-                      </div>
-                    ) : (
-                      <div>
-                        <div>WP({String(index).padStart(2, '0')})</div>
-                        <div className="coordinate-with-dropdown">
-                          <span>
-                            Coordinates({waypoint[0].toFixed(8)}, {waypoint[1].toFixed(8)})
-                          </span>
-                          <div className="coordinate-dropdown">
-                            <button onClick={() => setShowDropdown(index)}>⋮</button>
-                            {showDropdown === index && (
-                              <div className="dropdown-menu">
-                                <button onClick={() => handlePolygonInsert(index, 'before')}>
-                                  Insert Polygon Before
-                                </button>
-                                <button onClick={() => handlePolygonInsert(index, 'after')}>
-                                  Insert Polygon After
-                                </button>
-                              </div>
-                            )}
-                          </div>
+  <div className="modal">
+    <div className="modal-content">
+      <span className="close" onClick={handleModalClose}>&times;</span>
+      <h2>Mission Waypoints</h2>
+      <div className="scrollable-container">
+        <table className="waypoints-table">
+          <thead>
+            <tr>
+              <th>Waypoint</th>
+              <th>Coordinates</th>
+              <th>Distance (m)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {waypoints.map((waypoint, index) => (
+              <tr key={index}>
+                <td>
+                  {waypoint.type === 'polygon' 
+                    ? `Polygon Ref (${waypoint.index})`
+                    : `WP(${String(index).padStart(2, '0')})`
+                  }
+                </td>
+                <td>
+                  {waypoint.type === 'polygon' ? (
+                    <button onClick={() => {
+                      if (waypoint.coordinates) {
+                        setTempPolygon({
+                          coordinates: waypoint.coordinates,
+                          position: index,
+                          type: 'view'
+                        });
+                        setShowPolygonModal(true);
+                      }
+                    }}>
+                      View Polygon
+                    </button>
+                  ) : (
+                    `${waypoint[0].toFixed(6)}°, ${waypoint[1].toFixed(6)}°`
+                  )}
+                </td>
+                <td>
+                  {index > 0 && !waypoint.type && distances[index]}
+                </td>
+                <td>
+                  {!waypoint.type && (
+                    <div className="coordinate-dropdown">
+                      <button onClick={() => setShowDropdown(index)}>⋮</button>
+                      {showDropdown === index && (
+                        <div className="dropdown-menu">
+                          <button onClick={() => handlePolygonInsert(index, 'before')}>
+                            Insert Polygon Before
+                          </button>
+                          <button onClick={() => handlePolygonInsert(index, 'after')}>
+                            Insert Polygon After
+                          </button>
                         </div>
-                        {index > 0 && <div>Distance: {distances[index]}m</div>}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+                      )}
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 )}
 
 {/* Polygon Modal */}
