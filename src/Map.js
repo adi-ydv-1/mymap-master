@@ -26,6 +26,7 @@ const MapComponent = () => {
   const [insertType, setInsertType] = useState(null); // 'before' or 'after'
   const [tempPolygon, setTempPolygon] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null);
+  const [isInsertMode, setIsInsertMode] = useState(false);
 
   // Add dropdown menu component
   const CoordinateDropdown = ({ index }) => (
@@ -121,6 +122,7 @@ const MapComponent = () => {
 
   // Handle polygon insertion
   const handlePolygonInsert = (index, type) => {
+    setIsInsertMode(true);
     setInsertPosition(index);
     setInsertType(type);
     setDrawType('Polygon');
@@ -206,6 +208,8 @@ const MapComponent = () => {
   const handleModalClose = () => {
     setShowMissionModal(false);
     setShowPolygonModal(false);
+    setIsInsertMode(false);
+    setTempPolygon(null);
   };
 
   // Import polygon points
@@ -346,7 +350,7 @@ border: '1px solid black'
             <h2>Polygon Coordinates</h2>
             {tempPolygon && (
                 <div>
-                    {(tempPolygon.type === 'before' || tempPolygon.type === 'after') && (
+                    {isInsertMode && (
                         <button 
                             onClick={handleImportPolygon}
                             className="import-button"
