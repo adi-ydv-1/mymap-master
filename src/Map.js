@@ -346,12 +346,14 @@ border: '1px solid black'
             <h2>Polygon Coordinates</h2>
             {tempPolygon && (
                 <div>
-                    <button 
-                        onClick={handleImportPolygon}
-                        className="import-button"
-                    >
-                        Import Points
-                    </button>
+                    {(tempPolygon.type === 'before' || tempPolygon.type === 'after') && (
+                        <button 
+                            onClick={handleImportPolygon}
+                            className="import-button"
+                        >
+                            Import Points
+                        </button>
+                    )}
                     <div className="polygon-coordinates">
                         <table>
                             <thead>
